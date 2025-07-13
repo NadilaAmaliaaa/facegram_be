@@ -11,8 +11,10 @@ class Post extends Model
 
     protected $table = 'posts';
 
+    public $timestamps = false;
+
     protected $fillable = [
-        'caption', 'user_id', 'created_at', 'deleted_at'
+        'caption', 'user_id', 'created_at', 'deleted_at', 'updated_at'
     ];
 
     public function user()

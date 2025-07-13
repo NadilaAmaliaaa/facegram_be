@@ -153,4 +153,33 @@ class FollowController extends Controller
             'message' => $requester->username . ' follow request accepted'
         ], 200);
     }
+    public function getFollowers($username){
+        $targetUser = User::where('username', $username)->first();
+
+        if (!$targetUser) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $followers = Follow::with('follower')
+            ->where('following_id', $targetUser->id)
+            ->get()
+            ->map(function ($follow) {
+                $followerUser = $follow->follower;
+                return [
+                    'id' => $followerUser->id,
+                    'full_name' => $followerUser->full_name,
+                    'username' => $followerUser->username,
+                    'bio' => $followerUser->bio,
+                    'is_private' => (int) $followerUser->is_private,
+                    'created_at' => $followerUser->created_at,
+                    'is_requested' => !$follow->is_accepted,
+                ];
+            });
+
+        return response()->json([
+            'followers' => $followers
+        ], 200);
+    }
 }

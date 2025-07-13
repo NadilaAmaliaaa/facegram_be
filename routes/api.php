@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +29,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/{username}/unfollow', [FollowController::class, 'unfollow']);
     Route::get('/following', [FollowController::class, 'getFollowing']);
     Route::put('/{username}/accept', [FollowController::class, 'acceptFollowRequest']);
+    Route::get('/{username}/followers', [FollowController::class, 'getFollowers']);
+
+    //USER
+    Route::get('/users', [UserController::class, 'getUsers']);
+    Route::get('/users/{username}', [UserController::class, 'getDetailedUsers']);
 });
